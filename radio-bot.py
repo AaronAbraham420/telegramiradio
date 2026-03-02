@@ -551,11 +551,11 @@ async def button_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # MAIN
 # ══════════════════════════════════════════════════════════
 
-def main():
+# ✅ Fixed — forces asyncio to create the loop first
+async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start",   cmd_start))
-    app.add_handler(CommandHandler("help",    cmd_start))
     app.add_handler(CommandHandler("play",    cmd_play))
     app.add_handler(CommandHandler("queue",   cmd_queue))
     app.add_handler(CommandHandler("np",      cmd_np))
@@ -566,9 +566,16 @@ def main():
     app.add_handler(CommandHandler("sources", cmd_sources))
     app.add_handler(CallbackQueryHandler(button_handler))
 
-    log.info("Bot started. Listening...")
-    app.run_polling(drop_pending_updates=True)
+    async with app:
+        await app.initialize()
+        await app.start()
+        await app.updater.start_polling(drop_pending_updates=True)
 
+        # Keep running until Ctrl+C
+        await asyncio.Event().wait()
+
+        await app.updater.stop()
+        await app.stop()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())   # ← this creates the event loop BEFORE PTB touches it
