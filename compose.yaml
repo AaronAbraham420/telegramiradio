@@ -7,7 +7,7 @@ services:
   # Listeners connect to http://localhost:8000/radio
   # ────────────────────────────────────────────
   icecast:
-    image: danielnobbe/icecast:latest
+    image: pltnk/icecast2:latest
     container_name: icecast
     restart: unless-stopped
     network_mode: host
@@ -26,8 +26,9 @@ services:
   # Pushes audio stream to Icecast on port 8000
   # ────────────────────────────────────────────
   liquidsoap:
-    image: ghcr.io/savonet/liquidsoap:rolling
+    image: savonet/liquidsoap:rolling-release-v2.4.x
     container_name: liquidsoap
+    platform: linux/amd64
     restart: unless-stopped
     network_mode: host
     volumes:
