@@ -22,7 +22,7 @@ radio = fallback(track_sensitive=false, [queue, silence])
 
 # Stream to Icecast
 output.icecast(
-  %mp3(bitrate=128, samplerate=44100, stereo=true),
+  %opus,
   host="127.0.0.1",
   port=8000,
   password="radio123",
