@@ -17,11 +17,14 @@ from telegram.ext import (
 # ─────────────────────────────────────────
 # CONFIG — fill these in
 # ─────────────────────────────────────────
-BOT_TOKEN        = "YOUR_TELEGRAM_BOT_TOKEN"
-SPOTIFY_CLIENT_ID     = "YOUR_SPOTIFY_CLIENT_ID"       # for Spotify API
-SPOTIFY_CLIENT_SECRET = "YOUR_SPOTIFY_CLIENT_SECRET"
-ALLOWED_GROUP_ID = None   # set to -100xxxxxxxxx to restrict to one group, or None for all
-ADMIN_IDS        = []     # Telegram user IDs that can use admin commands
+import os
+
+
+BOT_TOKEN             = os.environ["BOT_TOKEN"]
+SPOTIFY_CLIENT_ID     = os.environ.get("SPOTIFY_CLIENT_ID", "")
+SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
+ALLOWED_GROUP_ID      = int(os.environ["ALLOWED_GROUP_ID"]) if os.environ.get("ALLOWED_GROUP_ID") else None
+ADMIN_IDS             = list(map(int, os.environ.get("ADMIN_IDS", "").split(","))) if os.environ.get("ADMIN_IDS") else []
 # ─────────────────────────────────────────
 
 logging.basicConfig(
