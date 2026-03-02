@@ -1,0 +1,38 @@
+name: telegramiradio
+
+services:
+
+  # ────────────────────────────────────────────
+  # ICECAST2 — Stream server
+  # Listeners connect to http://localhost:8000/radio
+  # ────────────────────────────────────────────
+  icecast:
+    image: danielnobbe/icecast:latest
+    container_name: icecast
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./icecast.xml:/etc/icecast2/icecast.xml:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/status-json.xsl"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # ────────────────────────────────────────────
+  # LIQUIDSOAP — Audio engine + queue
+  # Accepts URLs from bot via telnet on port 1234
+  # Pushes audio stream to Icecast on port 8000
+  # ────────────────────────────────────────────
+  liquidsoap:
+    image: ghcr.io/savonet/liquidsoap:rolling
+    container_name: liquidsoap
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./radio.liq:/radio.liq:ro
+    command: liquidsoap /radio.liq
+    depends_on:
+      icecast:
+        condition: service_healthy
