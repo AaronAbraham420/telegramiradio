@@ -1,0 +1,1 @@
+worker: python radio_bot.py
