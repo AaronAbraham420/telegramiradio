@@ -7,6 +7,7 @@ Song.link, hifi-api, dabmusic.xyz, yoinkify.lol
 import logging
 import asyncio
 import aiohttp
+import os
 from urllib.parse import quote_plus
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -17,7 +18,7 @@ from telegram.ext import (
 # ─────────────────────────────────────────
 # CONFIG — fill these in
 # ─────────────────────────────────────────
-import os
+
 
 
 BOT_TOKEN             = os.environ["BOT_TOKEN"]
