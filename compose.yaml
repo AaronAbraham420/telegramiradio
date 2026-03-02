@@ -25,15 +25,15 @@ services:
   # Accepts URLs from bot via telnet on port 1234
   # Pushes audio stream to Icecast on port 8000
   # ────────────────────────────────────────────
-  liquidsoap:
-    image: savonet/liquidsoap:rolling-release-v2.4.x
-    container_name: liquidsoap
-    platform: linux/amd64
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - ./radio.liq:/radio.liq:ro
-    command: liquidsoap /radio.liq
-    depends_on:
-      icecast:
-        condition: service_healthy
+  # liquidsoap:
+  #   image: savonet/liquidsoap:rolling-release-v2.4.x
+  #   container_name: liquidsoap
+    
+  #   restart: unless-stopped
+  #   network_mode: host
+  #   volumes:
+  #     - ./radio.liq:/radio.liq:ro
+  #   command: liquidsoap /radio.liq
+  #   depends_on:
+  #     icecast:
+  #       condition: service_healthy

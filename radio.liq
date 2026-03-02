@@ -1,28 +1,29 @@
 #!/usr/bin/liquidsoap
 
+# ─────────────────────────────────────────
+# telegramiradio — Liquidsoap 2.x script
+# ─────────────────────────────────────────
+
+# Telnet server — bot pushes commands here
 settings.server.telnet.set(true)
-settings.server.telnet.bind_addr.set("127.0.0.1")  # native, no need for 0.0.0.0
+settings.server.telnet.bind_addr.set("127.0.0.1")
 settings.server.telnet.port.set(1234)
 
-settings.request.grace_time.set(10.)
-
+# Request queue — bot pushes URLs via:
+#   queue.push <url>
+#   queue.skip
 queue = request.queue(id="queue")
-silence = blank(duration=0.0)
 
-radio = fallback(
-  track_sensitive=false,
-  [queue, silence]
-)
+# Silence fallback when queue is empty
+silence = blank()
 
-radio = on_track(
-  fun(meta) ->
-    log("Now playing: #{meta['artist']} - #{meta['title']}"),
-  radio
-)
+# Main radio source
+radio = fallback(track_sensitive=false, [queue, silence])
 
+# Stream to Icecast
 output.icecast(
   %mp3(bitrate=128, samplerate=44100, stereo=true),
-  host="127.0.0.1",    # Icecast exposed by Podman on localhost:8000
+  host="127.0.0.1",
   port=8000,
   password="radio123",
   mount="/radio",
