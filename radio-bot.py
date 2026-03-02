@@ -18,9 +18,6 @@ from telegram.ext import (
 # ─────────────────────────────────────────
 # CONFIG — fill these in
 # ─────────────────────────────────────────
-
-
-
 BOT_TOKEN             = os.environ["BOT_TOKEN"]
 SPOTIFY_CLIENT_ID     = os.environ.get("SPOTIFY_CLIENT_ID", "")
 SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
